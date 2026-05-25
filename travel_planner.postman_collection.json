@@ -1,0 +1,357 @@
+{
+  "info": {
+    "name": "Travel Planner API",
+    "description": "Complete collection for the Travel Planner API. All endpoints require Basic Auth (admin / secret).\n\nBase URL: http://localhost:8000/api/v1\n\nSwagger UI: http://localhost:8000/docs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{AUTH_USERNAME}}", "type": "string" },
+      { "key": "password", "value": "{{AUTH_PASSWORD}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "BASE_URL", "value": "http://localhost:8000/api/v1" },
+    { "key": "AUTH_USERNAME", "value": "admin" },
+    { "key": "AUTH_PASSWORD", "value": "secret" }
+  ],
+  "item": [
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create project (with places)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects", "host": ["{{BASE_URL}}"], "path": ["projects"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Art Trip\",\n  \"description\": \"Visiting top museums\",\n  \"start_date\": \"2026-06-01T00:00:00\",\n  \"places\": [\n    { \"external_id\": 16568 },\n    { \"external_id\": 16571 }\n  ]\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create project (without places)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects", "host": ["{{BASE_URL}}"], "path": ["projects"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Empty Trip\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects?skip=0&limit=20",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects"],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List projects — filter by status=active",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects?status=active",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects"],
+              "query": [
+                { "key": "status", "value": "active" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List projects — filter by status=completed",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects?status=completed",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects"],
+              "query": [
+                { "key": "status", "value": "completed" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get project by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Update project",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Art Trip\",\n  \"description\": \"New description\",\n  \"start_date\": \"2026-07-15T00:00:00\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete project",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{BASE_URL}}/projects/2", "host": ["{{BASE_URL}}"], "path": ["projects", "2"] }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 404] Get non-existent project",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects/999", "host": ["{{BASE_URL}}"], "path": ["projects", "999"] }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 409] Delete project with visited places",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{BASE_URL}}/projects/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1"] }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 422] Create project with empty name",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects", "host": ["{{BASE_URL}}"], "path": ["projects"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "item": [
+        {
+          "name": "Add place to project",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 27992\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List places",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects/1/places?skip=0&limit=20",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects", "1", "places"],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List places — filter by visited=false",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects/1/places?visited=false",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects", "1", "places"],
+              "query": [
+                { "key": "visited", "value": "false" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List places — filter by visited=true",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/projects/1/places?visited=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["projects", "1", "places"],
+              "query": [
+                { "key": "visited", "value": "true" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get place by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects/1/places/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places", "1"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Update place — add notes",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Must see the water lilies room\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update place — mark as visited",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places/1", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visited\": true\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update place — notes and visited",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places/2", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places", "2"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Amazing gallery\",\n  \"visited\": true\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 404] Add non-existent artwork",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 999999999\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 409] Add duplicate place",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 16568\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 422] Exceed 10 places limit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{BASE_URL}}/projects/1/places", "host": ["{{BASE_URL}}"], "path": ["projects", "1", "places"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_id\": 11111\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 404] Get place from wrong project",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects/999/places/1", "host": ["{{BASE_URL}}"], "path": ["projects", "999", "places", "1"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "[ERROR 401] No credentials",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects", "host": ["{{BASE_URL}}"], "path": ["projects"] }
+          },
+          "response": []
+        },
+        {
+          "name": "[ERROR 401] Wrong password",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "admin", "type": "string" },
+                { "key": "password", "value": "wrongpassword", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "url": { "raw": "{{BASE_URL}}/projects", "host": ["{{BASE_URL}}"], "path": ["projects"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": { "raw": "http://localhost:8000/health", "host": ["http://localhost:8000"], "path": ["health"] }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
