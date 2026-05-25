@@ -5,7 +5,6 @@ alembic
 pydantic-settings
 httpx
 cachetools
-passlib[bcrypt]
 python-dotenv
 pytest
 pytest-asyncio

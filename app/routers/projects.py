@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_db
+from app.core.dependencies import get_current_user, get_db
 from app.schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate
 from app.services import projects as projects_service
 
-router = APIRouter(prefix="/projects", tags=["Projects"])
+router = APIRouter(
+    prefix="/projects",
+    tags=["Projects"],
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.post("", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)

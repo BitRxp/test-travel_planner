@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_db
+from app.core.dependencies import get_current_user, get_db
 from app.schemas.place import PlaceCreate, PlaceResponse, PlaceUpdate
 from app.services import places as places_service
 
-router = APIRouter(prefix="/projects/{project_id}/places", tags=["Places"])
+router = APIRouter(
+    prefix="/projects/{project_id}/places",
+    tags=["Places"],
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.post("", response_model=PlaceResponse, status_code=status.HTTP_201_CREATED)
