@@ -192,4 +192,8 @@ pyrightconfig.json
 .history
 .ionide
 
+### Adational ###
+Plan.md
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+
