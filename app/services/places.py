@@ -41,9 +41,15 @@ def get_place(db: Session, project_id: int, place_id: int) -> ProjectPlace:
     return place
 
 
-def get_places(db: Session, project_id: int, skip: int = 0, limit: int = 20) -> list[ProjectPlace]:
+def get_places(
+    db: Session,
+    project_id: int,
+    skip: int = 0,
+    limit: int = 20,
+    visited: bool | None = None,
+) -> list[ProjectPlace]:
     projects_service.get_project(db, project_id)
-    return places_crud.get_list(db, project_id=project_id, skip=skip, limit=limit)
+    return places_crud.get_list(db, project_id=project_id, skip=skip, limit=limit, visited=visited)
 
 
 def update_place(db: Session, project_id: int, place_id: int, data: PlaceUpdate) -> ProjectPlace:

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_user, get_db
+from app.models.project import ProjectStatus
 from app.schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate
 from app.services import projects as projects_service
 
@@ -18,8 +19,13 @@ async def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=list[ProjectResponse])
-def list_projects(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
-    return projects_service.get_projects(db, skip=skip, limit=limit)
+def list_projects(
+    skip: int = 0,
+    limit: int = 20,
+    status: ProjectStatus | None = None,
+    db: Session = Depends(get_db),
+):
+    return projects_service.get_projects(db, skip=skip, limit=limit, status=status)
 
 
 @router.get("/{project_id}", response_model=ProjectResponse)

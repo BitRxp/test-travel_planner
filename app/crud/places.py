@@ -31,13 +31,17 @@ def get_by_id(db: Session, place_id: int, project_id: int) -> ProjectPlace | Non
     return db.scalars(stmt).first()
 
 
-def get_list(db: Session, project_id: int, skip: int = 0, limit: int = 20) -> list[ProjectPlace]:
-    stmt = (
-        select(ProjectPlace)
-        .where(ProjectPlace.project_id == project_id)
-        .offset(skip)
-        .limit(limit)
-    )
+def get_list(
+    db: Session,
+    project_id: int,
+    skip: int = 0,
+    limit: int = 20,
+    visited: bool | None = None,
+) -> list[ProjectPlace]:
+    stmt = select(ProjectPlace).where(ProjectPlace.project_id == project_id)
+    if visited is not None:
+        stmt = stmt.where(ProjectPlace.visited == visited)
+    stmt = stmt.offset(skip).limit(limit)
     return list(db.scalars(stmt).all())
 
 

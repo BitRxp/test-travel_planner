@@ -23,8 +23,16 @@ def get_by_id(db: Session, project_id: int) -> TravelProject | None:
     return db.get(TravelProject, project_id)
 
 
-def get_list(db: Session, skip: int = 0, limit: int = 20) -> list[TravelProject]:
-    stmt = select(TravelProject).offset(skip).limit(limit)
+def get_list(
+    db: Session,
+    skip: int = 0,
+    limit: int = 20,
+    status: ProjectStatus | None = None,
+) -> list[TravelProject]:
+    stmt = select(TravelProject)
+    if status is not None:
+        stmt = stmt.where(TravelProject.status == status)
+    stmt = stmt.offset(skip).limit(limit)
     return list(db.scalars(stmt).all())
 
 

@@ -18,8 +18,14 @@ async def add_place(project_id: int, data: PlaceCreate, db: Session = Depends(ge
 
 
 @router.get("", response_model=list[PlaceResponse])
-def list_places(project_id: int, skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
-    return places_service.get_places(db, project_id, skip=skip, limit=limit)
+def list_places(
+    project_id: int,
+    skip: int = 0,
+    limit: int = 20,
+    visited: bool | None = None,
+    db: Session = Depends(get_db),
+):
+    return places_service.get_places(db, project_id, skip=skip, limit=limit, visited=visited)
 
 
 @router.get("/{place_id}", response_model=PlaceResponse)

@@ -37,8 +37,13 @@ def get_project(db: Session, project_id: int) -> TravelProject:
     return project
 
 
-def get_projects(db: Session, skip: int = 0, limit: int = 20) -> list[TravelProject]:
-    return projects_crud.get_list(db, skip=skip, limit=limit)
+def get_projects(
+    db: Session,
+    skip: int = 0,
+    limit: int = 20,
+    status: ProjectStatus | None = None,
+) -> list[TravelProject]:
+    return projects_crud.get_list(db, skip=skip, limit=limit, status=status)
 
 
 def update_project(db: Session, project_id: int, data: ProjectUpdate) -> TravelProject:
